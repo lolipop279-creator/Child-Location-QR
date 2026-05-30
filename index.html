@@ -108,7 +108,8 @@
           const accuracy = Math.round(position.coords.accuracy);
 
           status.innerHTML = "위치 확인이 완료되었습니다. 보호자에게 문자를 보내는 중입니다.";
-
+          alert("위치 획득 성공");
+          
           const data = {
             lat: lat,
             lng: lng,
