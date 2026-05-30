@@ -134,8 +134,10 @@
             "&accuracy=" + encodeURIComponent(accuracy) +
             "&t=" + Date.now();
 
-          const iframe = document.getElementsByName("hidden_frame")[0];
-          iframe.src = requestUrl;
+          window.open(requestUrl, "_blank");
+
+          status.innerHTML =
+            "위치 전송 페이지가 열렸습니다.<br><br>OK 화면이 보이면 전송이 완료된 것입니다.";
 
           status.innerHTML =
             "보호자에게 위치 정보를 전송했습니다.<br><br>가능하면 아이와 함께 안전한 장소에서 기다려 주세요.";
