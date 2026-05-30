@@ -136,10 +136,7 @@
             "&accuracy=" + encodeURIComponent(accuracy) +
             "&t=" + Date.now();
 
-          const img = document.createElement("img");
-          img.style.display = "none";
-          img.src = requestUrl;
-          document.body.appendChild(img);
+            window.open(requestUrl, "_blank");
 
           status.innerHTML =
             "보호자에게 위치 문자를 보냈습니다.<br><br>가능하면 아이와 함께 안전한 장소에서 기다려 주세요.";
