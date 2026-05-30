@@ -124,8 +124,6 @@
           const lng = position.coords.longitude;
           const accuracy = Math.round(position.coords.accuracy);
 
-          alert("위치 획득 성공");
-
           status.innerHTML =
             "위치 확인이 완료되었습니다. 보호자에게 문자를 보내는 중입니다.";
 
@@ -136,10 +134,10 @@
             "&accuracy=" + encodeURIComponent(accuracy) +
             "&t=" + Date.now();
 
-            window.open(requestUrl, "_blank");
+          window.open(requestUrl, "_blank");
 
-            status.innerHTML =
-              "문자 전송 페이지가 열렸습니다.<br><br>가능하면 아이와 함께 안전한 장소에서 기다려 주세요.";
+          status.innerHTML =
+            "문자 전송 페이지가 열렸습니다.<br><br>가능하면 아이와 함께 안전한 장소에서 기다려 주세요.";
         },
 
         function(error) {
