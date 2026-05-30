@@ -118,17 +118,23 @@
             ua: navigator.userAgent
           };
 
-          fetch(APPS_SCRIPT_URL, {
-            method: "POST",
-            mode: "no-cors",
-            headers: {
-              "Content-Type": "text/plain;charset=utf-8"
-            },
-            body: JSON.stringify(data)
-          })
-          .then(function() {
-            status.innerHTML =
-              "보호자에게 위치 문자를 보냈습니다.<br><br>가능하면 아이와 함께 안전한 장소에서 기다려 주세요.";
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = APPS_SCRIPT_URL;
+    form.target = "hidden_iframe";
+    form.style.display = "none";
+
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "payload";
+    input.value = JSON.stringify(data);
+
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
+
+    status.innerHTML =
+      "보호자에게 위치 문자를 보냈습니다.<br><br>가능하면 아이와 함께 안전한 장소에서 기다려 주세요.";
           })
           .catch(function(error) {
             status.innerHTML =
@@ -156,5 +162,7 @@
       );
     }
   </script>
+
+<iframe name="hidden_iframe" style="display:none;"></iframe>
 </body>
 </html>
