@@ -84,7 +84,7 @@
 
     <div class="notice">
       위치 정보는 보호자에게 전달하기 위한 용도로만 사용됩니다.<br>
-      문자 전송 시 보내는 분의 번호는 공개되지 않습니다.<br>
+      전화번호는 화면에 표시되지 않습니다.
     </div>
 
     <button class="primary" onclick="sendLocationSms()">
@@ -131,7 +131,7 @@
             method: "POST",
             mode: "no-cors",
             headers: {
-              "Content-Type": "application/json"
+              "Content-Type": "text/plain;charset=utf-8"
             },
             body: JSON.stringify({
               lat: lat,
