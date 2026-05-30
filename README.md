@@ -1,2 +1,2 @@
-# child-location-qr
+# Child-Location-QR
 Personal QR location sharing page
