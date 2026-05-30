@@ -6,9 +6,6 @@
 
   <title>보호자에게 위치 보내기</title>
 
-  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.5/kakao.min.js"
-    crossorigin="anonymous"></script>
-
   <style>
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
@@ -73,10 +70,6 @@
       word-break: break-word;
       font-size: 15px;
     }
-
-    a {
-      color: #0066cc;
-    }
   </style>
 </head>
 
@@ -86,7 +79,7 @@
 
     <p>
       이 아이가 길을 잃었거나 도움이 필요한 상황일 수 있습니다.
-      아래 버튼을 눌러 현재 위치를 보호자에게 카카오톡으로 보내주시길 부탁드립니다.
+      아래 버튼을 눌러 현재 위치를 보호자에게 문자로 보내주시길 부탁드립니다.
     </p>
 
     <div class="notice">
@@ -94,7 +87,7 @@
       전화번호는 화면에 표시되지 않습니다.
     </div>
 
-    <button class="primary" onclick="sendLocationByKakao()">
+    <button class="primary" onclick="sendLocationSms()">
       현재 위치 문자로 보내기
     </button>
 
@@ -106,16 +99,14 @@
   </div>
 
   <script>
-    Kakao.init("04997f00f9e4a1379c1d99732a8b2611");
-
-    const childName = "남자아이";
-    const guardianPhone = "01032798706";
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzFdO8NSeE1QI-YIKsHsMeKtZ3Nws6S5ZjzbuzOiINc6OTG_eeqaoR1_D5cfcuvfKo2/exec";
+    const guardianPhone = "01021342733";
 
     function callGuardian() {
       window.location.href = "tel:" + guardianPhone;
     }
 
-    function sendLocationByKakao() {
+    function sendLocationSms() {
       const status = document.getElementById("status");
 
       status.innerHTML =
@@ -132,40 +123,33 @@
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
           const accuracy = Math.round(position.coords.accuracy);
-          const now = new Date().toLocaleString("ko-KR");
 
-          const mapUrl = `https://maps.google.com/?q=${lat},${lng}`;
+          status.innerHTML =
+            "위치 확인이 완료되었습니다. 보호자에게 문자를 보내는 중입니다.";
 
-          status.innerHTML = `
-            위치 확인이 완료되었습니다.<br><br>
-            카카오톡 공유창이 열립니다. 보호자에게 전송해 주세요.<br><br>
-            <a href="${mapUrl}" target="_blank">지도에서 위치 확인하기</a>
-          `;
-
-          Kakao.Share.sendDefault({
-            objectType: "text",
-            text:
-`[아이 위치 알림]
-
-${childName}가 길을 잃었거나 도움이 필요한 상황일 수 있습니다.
-
-시간: ${now}
-위치 정확도: 약 ${accuracy}m
-
-지도 보기:
-${mapUrl}
-
-안내:
-아이를 안전한 곳에 머물게 해주시고, 보호자에게 이 메시지를 전달해 주세요.`,
-            link: {
-              mobileWebUrl: mapUrl,
-              webUrl: mapUrl
+          fetch(APPS_SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+              "Content-Type": "application/json"
             },
-            buttonTitle: "지도에서 위치 보기"
+            body: JSON.stringify({
+              lat: lat,
+              lng: lng,
+              accuracy: accuracy
+            })
+          })
+          .then(function() {
+            status.innerHTML =
+              "보호자에게 위치 문자를 보냈습니다.<br><br>가능하면 아이와 함께 안전한 장소에서 기다려 주세요.";
+          })
+          .catch(function() {
+            status.innerHTML =
+              "문자 전송 중 문제가 발생했습니다. 아래 전화 버튼으로 보호자에게 연락해 주세요.";
           });
         },
 
-        function(error) {
+        function() {
           status.innerHTML =
             "위치 확인에 실패했습니다. 위치 권한을 허용했는지 확인해 주세요.";
         },
